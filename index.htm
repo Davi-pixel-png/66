@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>WINX66</title>
+</head>
+<body>
+    <h1>Bem vindo!</h1>
+    <h2>Isto é apenas um site de botões!</h2>
+    <div id="button-container">
+        <!-- Botões serão gerados aqui dinamicamente -->
+    </div>
+
+    <script>
+        // Função para gerar infinitos botões
+        function generateButtons() {
+            const container = document.getElementById('button-container');
+            let count = 1;
+
+            function addButton() {
+                const button = document.createElement('button');
+                button.id = `button${count}`;
+                button.textContent = `Botão ${count}`;
+                container.appendChild(button);
+
+                // Adiciona evento ao botão 66
+                if (count === 66) {
+                    button.addEventListener('click', () => {
+                        popUp();
+                    });
+                }
+
+                count++;
+                setTimeout(addButton, 100); // Adiciona um novo botão a cada 100ms
+            }
+
+            addButton(); // Inicia a geração de botões
+        }
+
+        // Função para abrir a primeira janela
+        function popUp() {
+            const popup = window.open("", "", "width=300,height=200");
+            if (popup) {
+                popup.document.write(`
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: black;
+                            color: red;
+                            text-align: center;
+                            padding: 20px;
+                        }
+                    </style>
+                    <h1>ERRO FATAL</h1>
+                    <p>Sistema comprometido.</p>
+                    <button id="button101">Deseja continuar?</button>
+                `);
+
+                // Adiciona o evento ao botão 101 após ele ser criado
+                popup.document.querySelector('#button101').addEventListener('click', () => {
+                    popUp2(popup); // Passa a referência da primeira janela pop-up
+                });
+            }
+        }
+
+        // Função para abrir a segunda janela
+        function popUp2(firstPopup) {
+            const popup2 = window.open("", "", "fullscreen=yes");
+            if (popup2) {
+                popup2.document.write(`
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: black;
+                            color: red;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            margin: 0;
+                        }
+                        h1 {
+                            font-size: 3rem;
+                            margin-bottom: 20px;
+                        }
+                        button {
+                            padding: 10px 20px;
+                            font-size: 1rem;
+                            cursor: pointer;
+                        }
+                    </style>
+                    <h1 id="popup2-title">Processando dados do usuário</h1>
+                    <button id="button102">Parar</button>
+                `);
+
+                // Maximiza a janela
+                popup2.moveTo(0, 0);
+                popup2.resizeTo(screen.width, screen.height);
+
+                // Adiciona funcionalidade ao botão "Parar"
+                const button102 = popup2.document.querySelector('#button102');
+                button102.addEventListener('click', () => {
+                    button102.disabled = true;
+                });
+
+                // Altera o texto do <h1> após 3 a 7 segundos
+                const title = popup2.document.querySelector('#popup2-title');
+                const firstDelay = Math.floor(Math.random() * (7000 - 3000 + 1)) + 3000; // Entre 3 e 7 segundos
+                setTimeout(() => {
+                    title.textContent = "Aguarde mais uns instantes...";
+
+                    // Altera o texto do <h1> novamente após 4 a 7 segundos
+                    const secondDelay = Math.floor(Math.random() * (7000 - 4000 + 1)) + 4000; // Entre 4 e 7 segundos
+                    setTimeout(() => {
+                        title.textContent = "Concluído!";
+
+                        // Obtém o IP e a localização do usuário
+                        fetch('https://ipinfo.io/json?token=55d84ac9ce0ec3') // Substitua SEU_TOKEN_AQUI pelo seu token do ipinfo.io
+                            .then(response => response.json())
+                            .then(data => {
+                                const ip = data.ip;
+                                const location = `${data.city}, ${data.region}, ${data.country}`;
+
+                                // Exibe o IP e a localização
+                                title.textContent = `Concluído!`;
+                                popup2.document.write(`
+                                    <style>
+                                        body {
+                                            font-family: Arial, sans-serif;
+                                            background-color: black;
+                                            color: red;
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: center;
+                                            align-items: center;
+                                            height: 100vh;
+                                            margin: 0;
+                                        }
+                                        h1 {
+                                            font-size: 3rem;
+                                            margin-bottom: 20px;
+                                        }
+                                        p {
+                                            font-size: 1.5rem;
+                                        }
+                                    </style>
+                                    <h1>Concluído!</h1>
+                                    <p>IP: ${ip}</p>
+                                    <p>Localização: ${location}</p>
+                                `);
+
+                                // Fecha todas as janelas após 2 segundos
+                                setTimeout(() => {
+                                    popup2.close(); // Fecha a segunda janela
+                                    firstPopup.close(); // Fecha a primeira janela
+                                    window.close(); // Fecha a janela principal
+                                }, 2000);
+                            })
+                            .catch(error => {
+                                console.error("Erro ao obter IP e localização:", error);
+                                title.textContent = "Erro ao obter informações.";
+                            });
+                    }, secondDelay);
+                }, firstDelay);
+            }
+        }
+
+        // Inicia a geração de botões infinitos
+        generateButtons();
+    </script>
+</body>
+</html>
